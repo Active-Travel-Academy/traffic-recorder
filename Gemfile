@@ -63,11 +63,9 @@ group :test do
   gem "selenium-webdriver"
 end
 
-group :production do
-  gem "appengine", "~> 0.7.0"
-end
-
 gem "devise", "~> 4.9"
 
 gem "mailjet", "~> 1.7"
 gem 'rollbar'
+
+gem "dockerfile-rails", ">= 1.6", :group => :development
