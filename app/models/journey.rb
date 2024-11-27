@@ -48,7 +48,34 @@ class Journey < ApplicationRecord
     }
   end
 
+  def route!(run)
+    resp = mapbox_directions[0]
+
+    return unless resp["code"] == "Ok"
+
+    route = resp["routes"][0]
+    leg = route["legs"][0]
+
+    journey_runs.create!(
+      run: run,
+      distance: route["distance"],
+      duration: route["duration_typical"],
+      duration_in_traffic: route["duration"],
+      overview_polyline: route["geometry"]["coordinates"],
+      congestion_numeric: leg["annotation"]["congestion_numeric"],
+      incidents: leg["incidents"].map { |incid| incid["long_description"] }.to_sentence
+    )
+  end
+
   private
+
+  def mapbox_directions
+    Mapbox::Directions.directions(mapbox_coordinates, "driving-traffic", geometries: "geojson", annotations: "congestion_numeric", waypoints_per_route: true, overview: "full")
+  end
+
+  def mapbox_coordinates
+    [ { longitude: origin_lng, latitude: origin_lat} , { longitude: dest_lng, latitude: dest_lat } ]
+  end
 
   def trim_name
     self.name = self.name.strip[0,250] if self.name

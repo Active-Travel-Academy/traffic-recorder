@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_16_121114) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_27_143027) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -31,7 +31,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_16_121114) do
     t.integer "duration_in_traffic"
     t.integer "distance", null: false
     t.jsonb "overview_polyline", null: false
-    t.timestamptz "created_at", default: -> { "now()" }
+    t.datetime "created_at"
+    t.jsonb "congestion_numeric"
+    t.text "incidents"
     t.index ["created_at"], name: "index_journey_runs_on_created_at"
     t.index ["journey_id"], name: "journey_runs_journey_id"
     t.index ["run_id"], name: "journey_runs_run_id"
@@ -65,8 +67,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_16_121114) do
 
   create_table "runs", force: :cascade do |t|
     t.bigint "ltn_id", null: false
-    t.timestamptz "time", default: -> { "now()" }, null: false
-    t.timestamptz "finished_at", default: -> { "now()" }
+    t.datetime "created_at", null: false
+    t.datetime "finished_at"
     t.enum "mode", default: "driving", null: false, enum_type: "run_mode"
     t.index ["ltn_id"], name: "runs_ltn_id"
     t.index ["mode"], name: "runs_mode"
