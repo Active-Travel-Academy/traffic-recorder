@@ -4,7 +4,7 @@
   .row
     .col-sm-6
       = simple_form_for [@journey.ltn, @journey] do |f|
-        = f.input :disabled
+        = f.input :enabled, as: :boolean
         = f.input :name
         = f.button :submit
 

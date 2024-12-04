@@ -24,8 +24,8 @@ class JourneysController < ApplicationController
   end
 
   def update
-    if journey.update!(update_params)
-      if update_params.keys == ["disabled"]
+    if journey.update(update_params)
+      if update_params.keys == ["enabled"]
         flash.now[:notice] = "#{journey.display_name} is now #{journey.disabled ? 'disabled' : 'enabled'}"
       else
         flash.now[:notice] = "#{journey.display_name} updated"
@@ -64,6 +64,6 @@ class JourneysController < ApplicationController
   end
 
   def update_params
-    params.require(:journey).permit(:disabled, :name)
+    params.require(:journey).permit(:enabled, :name)
   end
 end

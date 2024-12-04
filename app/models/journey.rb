@@ -33,7 +33,7 @@ class Journey < ApplicationRecord
   end
 
   def enabled=(enabled)
-    self.disabled = !enabled
+    self.disabled = !ActiveModel::Type::Boolean.new.cast(enabled)
   end
 
   def display_name
