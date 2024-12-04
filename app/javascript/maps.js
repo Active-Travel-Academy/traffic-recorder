@@ -83,7 +83,7 @@ const pgLoad = () => {
     const map = L.map(mapEl)
 
     const pntsArray = JSON.parse(mapEl.dataset.line)
-    const pnts = pntsArray.map((pnt) => new L.LatLng(pnt[0], pnt[1]))
+    const pnts = pntsArray.map((pnt) => new L.LatLng(pnt[1], pnt[0]))
 
     const pline = new L.Polyline(pnts, {
         color: 'green',
