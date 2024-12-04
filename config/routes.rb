@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   resources :ltns do
     member do
+      post :enable_page_journeys
+      post :disable_page_journeys
       post :enable_all_journeys
       post :disable_all_journeys
     end

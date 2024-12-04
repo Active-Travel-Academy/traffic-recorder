@@ -49,12 +49,22 @@ class LtnsController < ApplicationController
   end
 
   def enable_all_journeys
-    all_journeys.enable_all!
-    redirect_to action: :show, id: @ltn.id, page: all_journeys_params[:page]
+    @ltn.journeys.enable_all!
+    redirect_to action: :show, id: @ltn.id, page: params[:all_journeys][:page]
   end
 
   def disable_all_journeys
-    all_journeys.disable_all!
+    @ltn.journeys.disable_all!
+    redirect_to action: :show, id: @ltn.id, page: params[:all_journeys][:page]
+  end
+
+  def enable_page_journeys
+    page_journeys.enable_all!
+    redirect_to action: :show, id: @ltn.id, page: all_journeys_params[:page]
+  end
+
+  def disable_page_journeys
+    page_journeys.disable_all!
     redirect_to action: :show, id: @ltn.id, page: all_journeys_params[:page]
   end
 
@@ -64,7 +74,7 @@ class LtnsController < ApplicationController
     { journey_ids: JSON.parse(params[:all_journeys][:journey_ids]), page: params[:all_journeys][:page] }
   end
 
-  def all_journeys
+  def page_journeys
     @ltn.journeys.where(id: all_journeys_params[:journey_ids])
   end
     # Use callbacks to share common setup or constraints between actions.
