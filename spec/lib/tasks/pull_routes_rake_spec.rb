@@ -26,6 +26,8 @@ describe "pull_routes" do
         JourneyRun.count
       }.by(expected_routing_count).and(
         change { Journey.where(type: :test_routing, disabled: false).count }.to(0)
+      ).and(
+        change { Journey.where(type: :infrequently_routed, disabled: false).count }.by(expected_routing_count)
       )
     end
   end
