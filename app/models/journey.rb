@@ -63,7 +63,7 @@ class Journey < ApplicationRecord
       duration_in_traffic: route["duration"],
       overview_polyline: route["geometry"]["coordinates"],
       congestion_numeric: leg["annotation"]["congestion_numeric"],
-      incidents: leg["incidents"].map { |incid| incid["long_description"] }.to_sentence
+      incidents: leg["incidents"]&.map { |incid| incid["long_description"] }&.to_sentence
     )
   end
 
