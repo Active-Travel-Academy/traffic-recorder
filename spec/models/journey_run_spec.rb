@@ -35,7 +35,7 @@ RSpec.describe JourneyRun, type: :model do
         parsed = CSV.parse(csv, headers: true)
         expect(parsed.headers).to eq [
           "scheme", "mode", "journey_id", "origin_lat", "origin_lng", "dest_lat", "dest_lng",
-          "run_id", "duration", "duration_in_traffic", "distance", "created_at"
+          "run_id", "duration", "duration_in_traffic", "incidents", "distance", "created_at"
         ]
         first = parsed.first
         aggregate_failures do
@@ -48,21 +48,25 @@ RSpec.describe JourneyRun, type: :model do
           expect(first["run_id"]).to eq "1020"
           expect(first["duration"]).to eq "204"
           expect(first["duration_in_traffic"]).to eq "258"
+          expect(first["incidents"]).to eq "\"The road is closed\""
           expect(first["distance"]).to eq "1260"
         end
       end
     end
 
     context "with overview_polyline" do
+      let(:journey_run) { journey_runs(:infrequently_routed_enabled_first) }
+
       it do
         csv = described_class.to_csv(from: Date.new(2021, 3, 24), to: Date.new(2021, 3, 26), ltn:, overview_polyline: true)
         parsed = CSV.parse(csv, headers: true)
         expect(parsed.headers).to eq [
           "scheme", "mode", "journey_id", "origin_lat", "origin_lng", "dest_lat", "dest_lng",
-          "run_id", "duration", "duration_in_traffic", "distance", "created_at", "overview_polyline"
+          "run_id", "duration", "duration_in_traffic", "incidents", "distance", "created_at", "overview_polyline", "congestion_numeric"
         ]
-        expect(parsed.first["overview_polyline"]).to eq described_class.where(run_id: parsed.first["run_id"]).first.overview_polyline.to_s
-
+        expect(parsed.first["run_id"]).to eq journey_run.run_id.to_s
+        expect(parsed.first["overview_polyline"]).to eq journey_run.overview_polyline.to_json
+        expect(parsed.first["congestion_numeric"]).to eq "[null,1,2,3,null,10]"
       end
     end
   end
