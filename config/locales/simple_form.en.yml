@@ -11,6 +11,9 @@ en:
     error_notification:
       default_message: "Please review the problems below:"
     # Examples
+    labels:
+      data_download:
+        overview_polyline: Include the overview_polyline and the congestion_numeric in the download.
     hints:
       journey:
         enabled: Only enabled journeys will be routed.
