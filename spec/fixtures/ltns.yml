@@ -1,7 +1,6 @@
-Ltn_1:
-  id: 1
-  scheme_name: testing
+dulwich:
+  scheme_name: Dulwich
 
-Ltn_2:
+other:
   id: 3
-  scheme_name: test Dulwich
+  scheme_name: Other

@@ -1,32 +1,29 @@
-Journey_1:
-  id: 1
-  ltn_id: 1
+infrequently_routed_enabled:
+  ltn: dulwich
   origin_lat: !ruby/object:BigDecimal 27:0.51444084e2
   origin_lng: !ruby/object:BigDecimal 18:-0.8521915e-1
   dest_lat: !ruby/object:BigDecimal 27:0.51451654e2
   dest_lng: !ruby/object:BigDecimal 18:-0.9603918e-1
-  disabled: true
-  type: frequently_routed
+  disabled: false
+  type: infrequently_routed
 
-Journey_2:
-  id: 7
-  ltn_id: 3
+infrequently_routed_disabled:
+  ltn: dulwich
   origin_lat: !ruby/object:BigDecimal 27:0.5142859621e2
   origin_lng: !ruby/object:BigDecimal 18:-0.8631476e-1
   dest_lat: !ruby/object:BigDecimal 27:0.5143599399e2
   dest_lng: !ruby/object:BigDecimal 18:-0.9056338e-1
   disabled: true
-  type: frequently_routed
+  type: infrequently_routed
 
-Journey_3:
-  id: 8
-  ltn_id: 3
+test_routed_enabled:
+  ltn: dulwich
   origin_lat: !ruby/object:BigDecimal 27:0.5143599399e2
   origin_lng: !ruby/object:BigDecimal 18:-0.9056338e-1
   dest_lat: !ruby/object:BigDecimal 27:0.5144109014e2
   dest_lng: !ruby/object:BigDecimal 18:-0.9292373e-1
-  disabled: true
-  type: frequently_routed
+  disabled: false
+  type: test_routing
 
 Journey_4:
   id: 9
@@ -287,4 +284,3 @@ Journey_29:
   dest_lng: !ruby/object:BigDecimal 18:-0.9429894e-1
   disabled: true
   type: frequently_routed
-

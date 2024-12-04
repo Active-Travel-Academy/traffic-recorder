@@ -17,7 +17,7 @@ RSpec.describe Journey, type: :model do
       )
     end
     let(:mime_type) { :csv }
-    let(:scheme) { ltns(:Ltn_1) }
+    let(:scheme) { ltns(:dulwich) }
 
     context "with a good csv" do
       let(:file_name) { "journeys_upload_good.csv" }

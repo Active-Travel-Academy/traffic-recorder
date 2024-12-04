@@ -1,6 +1,5 @@
 JourneyRun_1:
-  id: 7304
-  journey_id: 1
+  journey: infrequently_routed_enabled
   run_id: 1020
   duration: 204
   duration_in_traffic: 258
@@ -79,8 +78,7 @@ JourneyRun_1:
     time: 2021-03-25 06:00:03.415374000 Z
 
 JourneyRun_2:
-  id: 7305
-  journey_id: 1
+  journey: infrequently_routed_enabled
   run_id: 1021
   duration: 204
   duration_in_traffic: 166
@@ -160,7 +158,7 @@ JourneyRun_2:
 
 JourneyRun_3:
   id: 7306
-  journey_id: 1
+  journey: infrequently_routed_enabled
   run_id: 1022
   duration: 510
   duration_in_traffic: 700
@@ -322,7 +320,7 @@ JourneyRun_3:
 
 JourneyRun_4:
   id: 7307
-  journey_id: 1
+  journey: infrequently_routed_enabled
   run_id: 1023
   duration: 582
   duration_in_traffic: 1012
@@ -540,7 +538,7 @@ JourneyRun_4:
 
 JourneyRun_5:
   id: 7308
-  journey_id: 1
+  journey: infrequently_routed_enabled
   run_id: 1024
   duration: 204
   duration_in_traffic: 221
@@ -620,7 +618,7 @@ JourneyRun_5:
 
 JourneyRun_6:
   id: 10309
-  journey_id: 1
+  journey: infrequently_routed_enabled
   run_id: 1373
   duration: 215
   duration_in_traffic: 232
@@ -699,8 +697,7 @@ JourneyRun_6:
     time: 2021-04-03 10:00:04.124706000 Z
 
 JourneyRun_7:
-  id: 10310
-  journey_id: 7
+  journey: infrequently_routed_disabled
   run_id: 1375
   duration: 116
   duration_in_traffic: 117
@@ -735,9 +732,8 @@ JourneyRun_7:
     time: 2021-04-03 10:00:05.342736000 Z
 
 JourneyRun_8:
-  id: 10311
-  journey_id: 8
-  run_id: 1375
+  journey: test_routed_enabled
+  run: test_run
   duration: 99
   duration_in_traffic: 110
   distance: 593
@@ -2418,7 +2414,7 @@ JourneyRun_34:
 
 JourneyRun_35:
   id: 10338
-  journey_id: 1
+  journey: infrequently_routed_enabled
   run_id: 1376
   duration: 215
   duration_in_traffic: 232
@@ -2498,7 +2494,7 @@ JourneyRun_35:
 
 JourneyRun_36:
   id: 10339
-  journey_id: 7
+  journey: infrequently_routed_disabled
   run_id: 1378
   duration: 116
   duration_in_traffic: 120
@@ -2534,7 +2530,7 @@ JourneyRun_36:
 
 JourneyRun_37:
   id: 10340
-  journey_id: 8
+  journey: test_routed_enabled
   run_id: 1378
   duration: 99
   duration_in_traffic: 111

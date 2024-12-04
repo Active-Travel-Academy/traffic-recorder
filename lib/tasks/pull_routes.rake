@@ -15,7 +15,7 @@ namespace :pull_routes do
       ltn.journeys.where(disabled: false, type: :test_routing).find_each do |journey|
         run ||= ltn.runs.create(mode: "test_driving")
         journey.route!(run)
-        journey.update!(type: :infrequently_routed)
+        journey.update!(type: :infrequently_routed, disabled: true)
       end
     end
   end

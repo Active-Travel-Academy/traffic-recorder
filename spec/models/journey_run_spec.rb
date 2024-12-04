@@ -1,11 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe JourneyRun, type: :model do
+  let(:ltn) { ltns(:dulwich) }
   describe ".to_csv" do
     context "errors" do
       let(:error) do
         catch(:invalid_input) do
-          described_class.to_csv(from: from_date, to: to_date, ltn: Ltn.find(1))
+          described_class.to_csv(from: from_date, to: to_date, ltn:)
         end
       end
 
@@ -30,7 +31,7 @@ RSpec.describe JourneyRun, type: :model do
 
     context "without overview_polyline" do
       it do
-        csv = described_class.to_csv(from: Date.new(2021, 3, 24), to: Date.new(2021, 3, 26), ltn: Ltn.find(1))
+        csv = described_class.to_csv(from: Date.new(2021, 3, 24), to: Date.new(2021, 3, 26), ltn:)
         parsed = CSV.parse(csv, headers: true)
         expect(parsed.headers).to eq [
           "scheme", "mode", "journey_id", "origin_lat", "origin_lng", "dest_lat", "dest_lng",
@@ -38,9 +39,8 @@ RSpec.describe JourneyRun, type: :model do
         ]
         first = parsed.first
         aggregate_failures do
-          expect(first["scheme"]).to eq "testing"
+          expect(first["scheme"]).to eq "Dulwich"
           expect(first["mode"]).to eq "driving"
-          expect(first["journey_id"]).to eq "1"
           expect(first["origin_lat"]).to eq "51.444084"
           expect(first["origin_lng"]).to eq "-0.08521915"
           expect(first["dest_lat"]).to eq "51.451654"
@@ -55,13 +55,13 @@ RSpec.describe JourneyRun, type: :model do
 
     context "with overview_polyline" do
       it do
-        csv = described_class.to_csv(from: Date.new(2021, 3, 24), to: Date.new(2021, 3, 26), ltn: Ltn.find(1), overview_polyline: true)
+        csv = described_class.to_csv(from: Date.new(2021, 3, 24), to: Date.new(2021, 3, 26), ltn:, overview_polyline: true)
         parsed = CSV.parse(csv, headers: true)
         expect(parsed.headers).to eq [
           "scheme", "mode", "journey_id", "origin_lat", "origin_lng", "dest_lat", "dest_lng",
           "run_id", "duration", "duration_in_traffic", "distance", "created_at", "overview_polyline"
         ]
-        expect(parsed.first["overview_polyline"]).to eq described_class.first.overview_polyline.to_s
+        expect(parsed.first["overview_polyline"]).to eq described_class.where(run_id: parsed.first["run_id"]).first.overview_polyline.to_s
 
       end
     end
