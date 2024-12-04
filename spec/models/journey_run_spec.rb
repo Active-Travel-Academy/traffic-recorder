@@ -11,11 +11,15 @@ RSpec.describe JourneyRun, type: :model do
       end
 
       context "asking for more than one month" do
-        let(:from_date) { Date.new(2025, 1, 1) }
-        let(:to_date) { Date.new(2025, 2, 2) }
+        let(:from_date) { Date.new(2020, 2, 2) }
+        let(:to_date) { Date.new(2025, 2, 1) }
 
-        it "can only get 1 month at a time" do
-          expect(error).to eq "Can only ask for 1 month of data at a time"
+        before do
+          stub_const("JourneyRun::MAX_RUNS_COUNT", 1)
+        end
+
+        it "can only get N runs at a time" do
+          expect(error).to eq "Can only ask for 1 journey runs at a time.  The between '2020-02-02' and '2025-02-01' there are 11 journey runs."
         end
       end
 
