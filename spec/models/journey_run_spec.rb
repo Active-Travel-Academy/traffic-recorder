@@ -38,23 +38,23 @@ RSpec.describe JourneyRun, type: :model do
         csv = described_class.to_csv(from: Date.new(2021, 3, 24), to: Date.new(2021, 3, 26), ltn:)
         parsed = CSV.parse(csv, headers: true)
         expect(parsed.headers).to eq [
-          "scheme", "mode", "journey_id", "name", "origin_lat", "origin_lng", "dest_lat", "dest_lng",
-          "run_id", "duration", "duration_in_traffic", "incidents", "distance", "created_at"
+          "Scheme", "Mode", "Journey ID", "Journey Name", "Origin Lat", "Origin Long", "Dest Lat", "Dest Long",
+          "Run ID", "Duration", "Duration In Traffic", "Incidents", "Distance", "Created At"
         ]
         first = parsed.first
         aggregate_failures do
-          expect(first["name"]).to eq "Infrequently routed enabled"
-          expect(first["scheme"]).to eq "Dulwich"
-          expect(first["mode"]).to eq "driving"
-          expect(first["origin_lat"]).to eq "51.444084"
-          expect(first["origin_lng"]).to eq "-0.08521915"
-          expect(first["dest_lat"]).to eq "51.451654"
-          expect(first["dest_lng"]).to eq "-0.09603918"
-          expect(first["run_id"]).to eq "1020"
-          expect(first["duration"]).to eq "204"
-          expect(first["duration_in_traffic"]).to eq "258"
-          expect(first["incidents"]).to eq "\"The road is closed\""
-          expect(first["distance"]).to eq "1260"
+          expect(first["Journey Name"]).to eq "Infrequently routed enabled"
+          expect(first["Scheme"]).to eq "Dulwich"
+          expect(first["Mode"]).to eq "driving"
+          expect(first["Origin Lat"]).to eq "51.444084"
+          expect(first["Origin Long"]).to eq "-0.08521915"
+          expect(first["Dest Lat"]).to eq "51.451654"
+          expect(first["Dest Long"]).to eq "-0.09603918"
+          expect(first["Run ID"]).to eq "1020"
+          expect(first["Duration"]).to eq "204"
+          expect(first["Duration In Traffic"]).to eq "258"
+          expect(first["Incidents"]).to eq "The road is closed"
+          expect(first["Distance"]).to eq "1260"
         end
       end
     end
@@ -66,13 +66,13 @@ RSpec.describe JourneyRun, type: :model do
         csv = described_class.to_csv(from: Date.new(2021, 3, 24), to: Date.new(2021, 3, 26), ltn:, overview_polyline: true)
         parsed = CSV.parse(csv, headers: true)
         expect(parsed.headers).to eq [
-          "scheme", "mode", "journey_id", "name", "origin_lat", "origin_lng", "dest_lat", "dest_lng",
-          "run_id", "duration", "duration_in_traffic", "incidents", "distance", "created_at",
-          "overview_polyline", "congestion_numeric"
+          "Scheme", "Mode", "Journey ID", "Journey Name", "Origin Lat", "Origin Long", "Dest Lat", "Dest Long",
+          "Run ID", "Duration", "Duration In Traffic", "Incidents", "Distance", "Created At",
+          "Overview Polyline", "Congestion Numeric"
         ]
-        expect(parsed.first["run_id"]).to eq journey_run.run_id.to_s
-        expect(parsed.first["overview_polyline"]).to eq journey_run.overview_polyline.to_json
-        expect(parsed.first["congestion_numeric"]).to eq "[null,1,2,3,null,10]"
+        expect(parsed.first["Run ID"]).to eq journey_run.run_id.to_s
+        expect(parsed.first["Overview Polyline"]).to eq journey_run.overview_polyline.to_json
+        expect(parsed.first["Congestion Numeric"]).to eq "[null,1,2,3,null,10]"
       end
     end
   end
