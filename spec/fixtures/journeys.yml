@@ -1,5 +1,6 @@
 infrequently_routed_enabled:
   ltn: dulwich
+  name: Infrequently routed enabled
   origin_lat: !ruby/object:BigDecimal 27:0.51444084e2
   origin_lng: !ruby/object:BigDecimal 18:-0.8521915e-1
   dest_lat: !ruby/object:BigDecimal 27:0.51451654e2
