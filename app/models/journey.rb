@@ -1,6 +1,8 @@
 class Journey < ApplicationRecord
   self.inheritance_column = nil # type is used by the R program asker
-  enum :type, { frequently_routed: 'frequently_routed', infrequently_routed: 'infrequently_routed', test_routing: 'test_routing' }
+  enum :type,
+       { frequently_routed: 'frequently_routed', infrequently_routed: 'infrequently_routed',
+         test_routing: 'test_routing' }
   belongs_to :ltn
 
   has_many :journey_runs
@@ -15,7 +17,7 @@ class Journey < ApplicationRecord
   def self.create_from_csv(file, scheme)
     transaction do
       CSV.foreach(file, headers: true) do |row|
-        scheme.journeys.create!(row.to_h.transform_keys({"optional name" => "name"}).slice(*CREATE_PARAMS))
+        scheme.journeys.create!(row.to_h.transform_keys({ 'optional name' => 'name' }).slice(*CREATE_PARAMS))
       end
     end
   end
@@ -42,42 +44,45 @@ class Journey < ApplicationRecord
 
   def map_data
     {
-      origin_lat: origin_lat, origin_lng: origin_lng,
-      dest_lat: dest_lat, dest_lng: dest_lng,
-      waypoint_lat: waypoint_lat, waypoint_lng: waypoint_lng,
+      origin_lat:, origin_lng:,
+      dest_lat:, dest_lng:,
+      waypoint_lat:, waypoint_lng:
     }
   end
 
   def route!(run)
     resp = mapbox_directions[0]
 
-    return unless resp["code"] == "Ok"
+    return unless resp['code'] == 'Ok'
 
-    route = resp["routes"][0]
-    leg = route["legs"][0]
+    route = resp['routes'][0]
+    leg = route['legs'][0]
 
     journey_runs.create!(
-      run: run,
-      distance: route["distance"],
-      duration: route["duration_typical"],
-      duration_in_traffic: route["duration"],
-      overview_polyline: route["geometry"]["coordinates"],
-      congestion_numeric: leg["annotation"]["congestion_numeric"],
-      incidents: leg["incidents"]&.map { |incid| incid["long_description"] }&.to_sentence
+      run:,
+      distance: route['distance'],
+      duration: route['duration_typical'],
+      duration_in_traffic: route['duration'],
+      overview_polyline: route['geometry']['coordinates'],
+      congestion_numeric: leg['annotation']['congestion_numeric'],
+      incidents: leg['incidents']&.map { |incid| incid['long_description'] }&.to_sentence
     )
   end
 
   private
 
   def mapbox_directions
-    Mapbox::Directions.directions(mapbox_coordinates, "driving-traffic", geometries: "geojson", annotations: "congestion_numeric", waypoints_per_route: true, overview: "full")
+    Mapbox::Directions.directions(
+      mapbox_coordinates, 'driving-traffic', geometries: 'geojson',
+      annotations: 'congestion_numeric', waypoints_per_route: true, overview: 'full'
+    )
   end
 
   def mapbox_coordinates
-    [ { longitude: origin_lng, latitude: origin_lat} , { longitude: dest_lng, latitude: dest_lat } ]
+    [{ longitude: origin_lng, latitude: origin_lat }, { longitude: dest_lng, latitude: dest_lat }]
   end
 
   def trim_name
-    self.name = self.name.strip[0,250] if self.name
+    self.name = name.strip[0, 250] if name
   end
 end
