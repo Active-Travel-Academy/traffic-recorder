@@ -1,9 +1,13 @@
-%h1 Traffic Schemes
-#ltns
-  - @ltns.each do |ltn|
-    %div{id: "#{dom_id ltn}"}
-      %p
-        %strong Scheme:
-        = link_to ltn.scheme_name, ltn
-.mt-6
-  = button_to "New scheme", new_ltn_path, method: :get, class: "btn btn-primary"
+.container-sm.my-4
+  .row
+    .col-md-12
+      .d-flex.justify-content-between.align-items-center.mb-4
+        %h1 Traffic Schemes
+        = link_to "New Scheme", new_ltn_path, class: "btn btn-primary"
+
+  #ltns
+    - @ltns.each do |ltn|
+      .card.mb-3{ id: dom_id(ltn) }
+        .card-body
+          %h5.card-title.mb-0
+            = link_to ltn.scheme_name, ltn, class: "text-decoration-none"

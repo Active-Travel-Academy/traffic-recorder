@@ -1,26 +1,46 @@
-%h1= "#{@journey.display_name} for #{@ltn.scheme_name}"
-
-.container-sm
+.container-sm.my-4
   .row
-    .col-sm-6
-      = simple_form_for [@journey.ltn, @journey] do |f|
-        = f.input :enabled, as: :boolean
-        = f.input :name
-        = f.button :submit
+    .col-md-12
+      .card.mb-4
+        .card-header.bg-light
+          %h5.mb-0= "Edit #{@journey.display_name} for #{@ltn.scheme_name}"
+        .card-body
+          = simple_form_for [@journey.ltn, @journey] do |f|
+            = f.input :enabled, as: :boolean
+            = f.input :name, input_html: { style: "max-width: 400px;" }
+            = f.button :submit
 
-%p
-  = @journey.display_name
-  .show_map{data: @journey.map_data}
+  .row
+    .col-md-12
+      .card.mb-4
+        .card-header.bg-light
+          %h5.mb-0 Journey Details
+        .card-body
+          %h4= @journey.display_name
+          .show_map.mt-3.mb-3{ data: @journey.map_data }
 
-%p.my-1
-  - runs = @journey.journey_runs.last(3)
-  - if runs.present?
-    = "Last #{runs.size} runs:"
-    .row
-      - runs.each do |run|
-        .col-sm-3
-          %span= "Run at #{run.created_at}"
-          .journey_run_map{data: run.map_data}
-        .col-sm-1
-  - else
-    = link_to "Destroy this Journey", [@ltn, @journey], class: "btn btn-danger", method: :delete, confirm: true
+  .row
+    .col-md-12
+      .card
+        .card-header.bg-light
+          %h5.mb-0 Recent Runs
+        .card-body
+          - runs = @journey.journey_runs.last(3)
+          - if runs.present?
+            %p= "Last #{runs.size} runs:"
+            .row
+              - runs.each do |run|
+                .col-md-4.mb-3
+                  .card
+                    .card-body
+                      %p.mb-2
+                        %strong
+                          Run at:
+                          = run.created_at.strftime("%B %d, %Y %H:%M")
+                      .journey_run_map{ data: run.map_data }
+          - else
+            .alert.alert-info
+              No runs recorded yet.
+            = link_to "Delete this Journey", [@ltn, @journey],
+              method: :delete,
+                data: { confirm: "Are you sure you want to delete this journey?" }

@@ -1,71 +1,71 @@
-%h1= "Scheme: #{@ltn.scheme_name}"
+%h1.my-4= "Scheme: #{@ltn.scheme_name}"
 
-.my-4
-  = link_to "Download Journey Runs", new_ltn_journey_run_download_path(@ltn)
+.card.my-4
+  .card-header.bg-light
+    %h5.mb-0 Add New Journeys
+  .card-body
+    .container
+      .row
+        .col-sm-4.d-flex.align-items-end
+          = link_to "New journey", new_ltn_journey_path(@ltn), class: "btn btn-primary"
+        .col-sm-8
+          Upload a CSV file with your journeys.  It must be in this format:
+          %a{href: "/journeys_upload.csv"} journeys_upload.csv
+          = simple_form_for :journeys_upload, url: ltn_journeys_uploads_path(@ltn) do |f|
+            = f.input :file, as: :file, input_html: { accept: "text/csv" }, label: false
+            = f.button :submit, "Upload new journeys"
 
+.card.my-4
+  .card-header.bg-light
+    %h5.mb-0 Journeys
+  .card-body
+    %p.text-muted.mb-4= t "journey_run_info"
+    .d-flex.justify-content-center.mb-3
+      != pagy_bootstrap_nav(@pagy)
+    .row.gx-0.border-bottom.pb-2.mb-2
+      .col-md-1.text-center.fw-bold Enabled
+      .col-md-7.fw-bold Journey Name
+      .col-md-2.fw-bold Journey ID
+      - if @show_journey_type
+        .col-md-2.fw-bold Journey Type
+    #journeys
+      = render @journeys
 
-%h2 Journeys
-
-%p
-  = t "journey_run_info"
-
-!= pagy_bootstrap_nav(@pagy)
-.container
-  .row
-    .col-sm-1.text-center Enabled
-    .col-sm-5.text-center Journey Name
-    .col-sm-3.text-center Journey ID
-    - if @show_journey_type
-      .col-sm-2.text-center Journey Type
-#journeys
-  = render @journeys
-
-%hr
-.my-2.row
-  .col-sm-4
-    != pagy_bootstrap_nav(@pagy)
-  .col-sm-8
-    .row
+    %hr
+    .d-flex.justify-content-center.mb-3
+      != pagy_bootstrap_nav(@pagy)
+    .my-2.row
       .col-4
         = simple_form_for :all_journeys, url: [:disable_all_journeys, @ltn] do |f|
-          = f.input :page, input_html: { value: @pagy.page }, as: :hidden
+          = f.input :page, input_html: { value: @pagy.page }, as: :hidden, wrapper: false
           = f.button :submit, "Disable ALL #{@ltn.scheme_name} journeys", data: { confirm: "This will disable all #{@ltn.journeys.count} journeys for #{@ltn.scheme_name}. Are you sure?" }, class: "btn-warning"
       .col-4
         = simple_form_for :all_journeys, url: [:enable_all_journeys, @ltn] do |f|
-          = f.input :page, input_html: { value: @pagy.page }, as: :hidden
+          = f.input :page, input_html: { value: @pagy.page }, as: :hidden, wrapper: false
           = f.button :submit, "Enable ALL #{@ltn.scheme_name} journeys", data: { confirm: "This will disable all #{@ltn.journeys.count} journeys for #{@ltn.scheme_name}. Are you sure?" }, class: "btn-warning"
       .col-4
         - if @journeys.any?(&:disabled)
           = simple_form_for :all_journeys, url: [:enable_page_journeys, @ltn] do |f|
             = f.button :submit, "Enable journeys on page", data: { confirm: "This will enable all journeys visible on this page. Are you sure?" }
-            = f.input :journey_ids, input_html: { value: @journeys.map(&:id).to_json }, as: :hidden
-            = f.input :page, input_html: { value: @pagy.page }, as: :hidden
+            = f.input :journey_ids, input_html: { value: @journeys.map(&:id).to_json }, as: :hidden, wrapper: false
+            = f.input :page, input_html: { value: @pagy.page }, as: :hidden, wapper: false
         - else
           = simple_form_for :all_journeys, url: [:disable_page_journeys, @ltn] do |f|
             = f.button :submit, "Disable journeys on page", data: { confirm: "This will disable all journeys visible on this page. Are you sure?" }
-            = f.input :journey_ids, input_html: { value: @journeys.map(&:id).to_json }, as: :hidden
-            = f.input :page, input_html: { value: @pagy.page }, as: :hidden
+            = f.input :journey_ids, input_html: { value: @journeys.map(&:id).to_json }, as: :hidden, wrapper: false
+            = f.input :page, input_html: { value: @pagy.page }, as: :hidden, wrapper: false
+.card.my-4
+  .card-header.bg-light
+    %h5.mb-0= link_to "Download Journey Runs", new_ltn_journey_run_download_path(@ltn)
 
-.my-5
-%h5 Add new journeys
-.container.my-4
-  .row
-    .col-sm-4.d-flex.align-items-end
-      = link_to "New journey", new_ltn_journey_path(@ltn), class: "btn btn-primary"
-    .col-sm-8
-      Upload a CSV file with your journeys.  It must be in this format:
-      %a{href: "/journeys_upload.csv"} journeys_upload.csv
-      = simple_form_for :journeys_upload, url: ltn_journeys_uploads_path(@ltn) do |f|
-        = f.input :file, as: :file, input_html: { accept: "text/csv" }, label: false
-        = f.button :submit, "Upload new journeys"
 
 .my-4.row
   .col-md-2
-    = link_to "Back to schemes", ltns_path
+    = link_to "Back to schemes", ltns_path, class: "btn btn-outline-secondary"
   .col-md-2
-    = link_to "Edit this scheme", edit_ltn_path(@ltn)
+    = link_to "Edit this scheme", edit_ltn_path(@ltn), class: "btn btn-outline-secondary"
   %br
 
 - if @ltn.journeys.empty?
   .my-4
-    = link_to "Destroy this scheme", @ltn, class: "btn btn-danger", method: :delete, confirm: true
+    = link_to "Delete this scheme", @ltn, class: "btn btn-danger", method: :delete, confirm: true
