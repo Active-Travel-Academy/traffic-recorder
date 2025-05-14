@@ -1,8 +1,17 @@
 = simple_form_for ltn do |f|
-  = f.input :scheme_name
+  = f.input :scheme_name,
+            input_html: { class: "form-control-lg" },
+            wrapper_html: { class: "mb-4" }
+
   = f.input :default_lat, as: :hidden
   = f.input :default_lng, as: :hidden
-  %div Default point in scheme (when creating journeys this will be used as a starting point)
-  .edit_map{data: {form_prefix: "ltn_default"}}
 
-  = f.button :submit
+  .mb-3
+    %p.text-muted.mb-2
+      Centre of scheme
+      %abbr{title: "Required"} *
+      %small (This will be used to center journeys on the map)
+    .edit_map{ data: { form_prefix: "ltn_default" } }
+
+  = f.button :submit, "Continue"
+

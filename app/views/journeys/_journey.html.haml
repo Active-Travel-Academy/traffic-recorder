@@ -1,9 +1,21 @@
-.row
-  .col-sm-1.d-flex.justify-content-center
-    = simple_form_for [@ltn, journey], data: { turbo: true } do |f|
-      = f.input :enabled, input_html: { onchange: "this.form.requestSubmit();" }, hint: false, label: false, as: :boolean
-  .col-sm-5.text-center= journey.name&.truncate(100)
-  .col-sm-3.text-center
-    = link_to "[#{journey.id}]", [@ltn, journey]
+.row.gx-0.mb-3.align-items-center.border-bottom.pb-2{class: ("table-row" unless journey == @journeys.last)}
+  .col-md-1.d-flex.justify-content-center
+    = simple_form_for [@ltn, journey], data: { turbo: true }, html: { class: "mb-0" } do |f|
+      = f.input :enabled,
+                input_html: { onchange: "this.form.requestSubmit()" },
+                wrapper: false,
+                label: false,
+                hint: false,
+                as: :boolean
+
+  .col-md-7.ps-2
+    = link_to journey.display_name.truncate(75), [@ltn, journey], class: "text-decoration-none"
+
+  .col-md-2
+    .text-muted.small= "#{journey.id}"
+
+  / Type (conditional)
   - if @show_journey_type
-    .col-sm-2.text-center= journey.type
+    .col-md-2
+      %span.badge{class: "bg-#{journey.type == 'walking' ? 'info' : 'secondary'}"}
+        = journey.type.humanize

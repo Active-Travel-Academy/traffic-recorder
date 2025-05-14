@@ -1,7 +1,10 @@
-%h1 New Scheme
-
-= render "form", ltn: @ltn
-
-%br
-
-= link_to "Back to schemes", ltns_path
+.container-sm.my-4
+  .row
+    .col-md-8.mx-auto
+      .card
+        .card-header.bg-light
+          %h1.mb-0 New Scheme
+        .card-body
+          = render "form", ltn: @ltn
+          .d-flex.justify-content-between.mt-4
+            = link_to "Back to schemes", ltns_path, class: "btn btn-outline-secondary"
