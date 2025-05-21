@@ -1,0 +1,12 @@
+.map {
+  height: 400px;
+  border-radius: 6px;
+  border: 1px solid #eee;
+}
+
+.small_map{
+  height: 200px;
+  border-radius: 6px;
+  border: 1px solid #eee;
+}
+

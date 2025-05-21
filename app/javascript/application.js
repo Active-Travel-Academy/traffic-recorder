@@ -9,4 +9,4 @@ import "leaflet-draw"
 // Start Rails UJS
 Rails.start()
 Turbo.start()
-import "maps"
+import "controllers"

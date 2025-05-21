@@ -3,9 +3,11 @@
     .col-md-12
       .card.mb-4
         .card-header.bg-light
-          %h5.mb-0= "Edit #{@journey.display_name} for #{@ltn.scheme_name}"
+          %h5.mb-0
+            = "Edit #{@journey.display_name} for"
+            = link_to @ltn.scheme_name, @ltn, class: "text-decoration-none"
         .card-body
-          = simple_form_for [@journey.ltn, @journey] do |f|
+          = simple_form_for [@journey.ltn, @journey], data: { turbo: false } do |f|
             = f.input :enabled, as: :boolean
             = f.input :name, input_html: { style: "max-width: 400px;" }
             = f.button :submit
@@ -17,7 +19,18 @@
           %h5.mb-0 Journey Details
         .card-body
           %h4= @journey.display_name
-          .show_map.mt-3.mb-3{ data: @journey.map_data }
+          .map.mt-3.mb-3{ data: @journey.map_data }
+          - if @journey.origin.present? || @journey.point_of_interest.present?
+            .row
+              .col-md-6.origin
+                %strong
+                  Origin:
+                = link_to_if @journey.origin, @journey.origin&.name, [@ltn, @journey.origin]
+              .col-md-6.dest
+                %strong
+                  Point of Interest:
+                = link_to_if @journey.point_of_interest, @journey.point_of_interest&.name, [@ltn, @journey.point_of_interest]
+
 
   .row
     .col-md-12
@@ -37,10 +50,20 @@
                         %strong
                           Run at:
                           = run.created_at.strftime("%B %d, %Y %H:%M")
-                      .journey_run_map{ data: run.map_data }
+                      .map{
+                          data: {
+                            controller: "journey-run",
+                            journey_run_line_value: run.overview_polyline
+                          }
+                        }
+
           - else
             .alert.alert-info
               No runs recorded yet.
             = link_to "Delete this Journey", [@ltn, @journey],
               method: :delete,
                 data: { confirm: "Are you sure you want to delete this journey?" }
+  .my-4.row
+    .col-md-2
+      = link_to "Back to #{@ltn.scheme_name}", ltn_path(@ltn), class: "btn btn-outline-secondary"
+

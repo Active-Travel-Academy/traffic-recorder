@@ -1,0 +1,46 @@
+.container-sm.my-4
+  / Page Header
+  .d-flex.justify-content-between.align-items-center.mb-4
+    %h1.mb-0
+      = "Points of Interest and Origins for"
+      = link_to @ltn.scheme_name, ltn_path(@ltn), class: "text-decoration-none"
+
+  / Add New Card
+  .card.mb-4
+    .card-header.bg-light.d-flex.justify-content-between.align-items-center
+      %h5.mb-0 Add New
+    .card-body
+      .row.g-3
+        .col-md-4
+          = link_to "Add Origin", new_ltn_origin_path(@ltn), class: "btn btn-secondary w-100"
+        .col-md-4
+          = link_to "Add Point of Interest", new_ltn_point_of_interest_path(@ltn), class: "btn btn-secondary w-100"
+        .col-md-4
+          = button_to "Create Journeys", ltn_points_of_interest_and_origins_path(@ltn), method: :post, class: "btn btn-primary w-100"
+
+  / Origins Section
+  .card.mb-4
+    .card-header.bg-light
+      %h5.mb-0.origin Origins
+    .card-body
+      .row.gx-0.border-bottom.pb-2.mb-2.align-items-center
+        .col-md-3.fw-bold Name
+        .col-md-9.fw-bold Location
+      #origins
+        = render partial: "origin_or_poi", collection: @origins, as: :resource
+
+  / Points of Interest Section
+  .card.mb-4
+    .card-header.bg-light
+      %h5.mb-0.dest Points of Interest
+    .card-body
+      .row.gx-0.border-bottom.pb-2.mb-2.align-items-center
+        .col-md-3.fw-bold Name
+        .col-md-9.fw-bold Location
+      #pois
+        = render partial: "origin_or_poi", collection: @pois, as: :resource
+
+  .my-4.row
+    .col-md-2
+      = link_to "Back to #{@ltn.scheme_name}", ltn_path(@ltn), class: "btn btn-outline-secondary"
+

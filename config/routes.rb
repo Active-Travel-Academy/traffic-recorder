@@ -9,6 +9,18 @@ Rails.application.routes.draw do
     resources :journey_run_downloads
     resources :journeys_uploads, only: :create
     resources :journeys
+    resources :origins, :point_of_interests, except: :index do
+      collection do
+        get :search
+      end
+      member do
+        post :enable_page_journeys
+        post :disable_page_journeys
+        post :enable_all_journeys
+        post :disable_all_journeys
+      end
+    end
+    resources :points_of_interest_and_origins, only: %i[index create]
   end
 
   devise_for :users

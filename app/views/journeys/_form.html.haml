@@ -5,11 +5,31 @@
     ['Route normally</br><span class="form-text">It will be created "enabled" and first be routed at the next standard routing time, alongside all other enabled routes. Useful if you don’t need to check it.</span>'.html_safe, '0']]
   = f.input :origin_lat, as: :hidden
   = f.input :origin_lng, as: :hidden
+  %div Origin point
+  .map{
+      data: {
+        controller: "location",
+        location_lat_value: journey.origin_lat || @ltn.default_lat,
+        location_lng_value: journey.origin_lng || @ltn.default_lng,
+        location_persisted_value: journey.origin_lat.present?,
+        location_form_prefix_value: "journey_origin",
+        location_edit_mode_value: true
+      }
+    }
+
   = f.input :dest_lat, as: :hidden
   = f.input :dest_lng, as: :hidden
-  %div Origin point
-  .edit_map{data: {form_prefix: "journey_origin"}}
+
   %div Destination point
-  .edit_map{data: {form_prefix: "journey_dest"}}
+  .map{
+      data: {
+        controller: "location",
+        location_lat_value: journey.dest_lat || @ltn.default_lat,
+        location_lng_value: journey.dest_lng || @ltn.default_lng,
+        location_persisted_value: journey.dest_lat.present?,
+        location_form_prefix_value: "journey_dest",
+        location_edit_mode_value: true
+      }
+    }
 
   = f.button :submit

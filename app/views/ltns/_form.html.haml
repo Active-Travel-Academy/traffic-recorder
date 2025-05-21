@@ -11,7 +11,16 @@
       Centre of scheme
       %abbr{title: "Required"} *
       %small (This will be used to center journeys on the map)
-    .edit_map{ data: { form_prefix: "ltn_default" } }
+    .map{
+        data: {
+          controller: "location",
+          location_lat_value: ltn.default_lat || Ltn::DEFAULT_LAT,
+          location_lng_value: ltn.default_lng || Ltn::DEFAULT_LNG,
+          location_persisted_value: ltn.default_lat.present?,
+          location_form_prefix_value: "ltn_default",
+          location_edit_mode_value: true
+        }
+      }
 
   = f.button :submit, "Continue"
 

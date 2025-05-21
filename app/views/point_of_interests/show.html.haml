@@ -1,0 +1,26 @@
+%h1.my-4
+
+.container-sm.my-4
+  .card.my-4
+    .card-header.bg-light
+      %h5.mb-0= @point_of_interest.name
+    .card-body
+      .map{
+          data: {
+            controller: "location",
+            location_lat_value: @point_of_interest.lat,
+            location_lng_value: @point_of_interest.lng,
+            location_persisted_value: true,
+            location_origin_or_poi_value: @point_of_interest.class.name.underscore.downcase,
+          }
+        }
+
+
+  = render "shared/journeys_card", journeys: @journeys, resource: @point_of_interest, resource_name: @point_of_interest.name, pagy: @pagy, show_journey_type: false, resource_link: [@ltn, @point_of_interest]
+
+  .row
+    .col-md-5
+      = link_to "Back to Origins and Points of Interest", ltn_points_of_interest_and_origins_path(@ltn), class: "btn btn-outline-secondary"
+    .col-md-5
+      = link_to "Back to #{@ltn.scheme_name}", ltn_path(@ltn), class: "btn btn-outline-secondary"
+

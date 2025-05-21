@@ -1,0 +1,30 @@
+= simple_form_for [@ltn, resource] do |f|
+  = f.input :name,
+            input_html: { class: "form-control-lg" },
+            wrapper_html: { class: "mb-4" }
+  = f.input :lat, as: :hidden
+  = f.input :lng, as: :hidden
+
+  .mb-3
+    %p.text-muted.mb-2
+      Location
+      %abbr{title: "Required"} *
+    .map{
+        data: {
+          controller: "location",
+          location_lat_value: resource.lat || @ltn.default_lat,
+          location_lng_value: resource.lng || @ltn.default_lng,
+          location_persisted_value: resource.lat.present?,
+          location_form_prefix_value: resource.class.name.underscore.downcase,
+          location_origin_or_poi_value: resource.class.name.underscore.downcase,
+          location_edit_mode_value: true
+        }
+      }
+
+  - if resource.has_attribute?(:category)
+    = f.input :category, collection: PointOfInterest::CATEGORIES.map { |c| [c.titleize, c] },
+      include_blank: "Select a category",
+      input_html: { data: { choices_target: "select" } },
+      wrapper_html: { data: { controller: "choices" } }
+
+  = f.button :submit, "Continue"

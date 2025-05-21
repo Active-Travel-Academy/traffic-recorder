@@ -1,4 +1,6 @@
-%h1= "New Journey for #{@ltn.scheme_name}"
+%h1
+  = "New Journey for"
+  = link_to @ltn.scheme_name, @ltn, class: "text-decoration-none"
 
 .container.mt-1
   = t "journey_run_info"
@@ -9,4 +11,7 @@
 
 %br
 
-= link_to "Back to #{@ltn.scheme_name}", ltn_path(@ltn)
+.my-4.row
+  .col-md-2
+    = link_to "Back to #{@ltn.scheme_name}", ltn_path(@ltn), class: "btn btn-outline-secondary"
+

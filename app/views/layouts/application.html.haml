@@ -8,8 +8,9 @@
     = csp_meta_tag
     = stylesheet_link_tag "application", "data-turbo-track": "reload"
     = javascript_importmap_tags
-    %link{rel: "stylesheet", href: "https://unpkg.com/leaflet@#{Leaflet::VERSION}/dist/leaflet.css"}
-    %link{rel:"stylesheet", href: "https://unpkg.com/leaflet-draw@#{Leaflet::DRAW_VERSION}/dist/leaflet.draw.css"}
+    = stylesheet_link_tag "https://unpkg.com/leaflet@#{Leaflet::VERSION}/dist/leaflet.css"
+    = stylesheet_link_tag "https://unpkg.com/leaflet-draw@#{Leaflet::DRAW_VERSION}/dist/leaflet.draw.css"
+    = stylesheet_link_tag "https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/styles/choices.min.css"
 
     = favicon_link_tag
   %body

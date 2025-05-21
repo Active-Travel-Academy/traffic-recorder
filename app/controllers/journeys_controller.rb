@@ -35,7 +35,7 @@ class JourneysController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to journey }
+      format.html { render :show }
       format.turbo_stream # Renders update.turbo_stream.erb
     end
   end

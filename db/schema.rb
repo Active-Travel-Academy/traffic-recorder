@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_01_201727) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_14_105138) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension "pg_catalog.plpgsql"
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
@@ -52,7 +52,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_01_201727) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "origin_id"
+    t.bigint "point_of_interest_id"
     t.index ["ltn_id"], name: "journeys_ltn_id", where: "(NOT disabled)"
+    t.index ["origin_id"], name: "index_journeys_on_origin_id"
+    t.index ["point_of_interest_id", "origin_id"], name: "index_journeys_on_origin_and_poi", unique: true
     t.index ["type"], name: "journeys_type"
     t.check_constraint "waypoint_lat IS NULL AND waypoint_lng IS NULL OR waypoint_lat IS NOT NULL AND waypoint_lng IS NOT NULL", name: "both_or_neither_waypoints"
   end
@@ -63,6 +67,27 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_01_201727) do
     t.float "default_lat"
     t.float "default_lng"
     t.index ["user_id"], name: "index_ltns_on_user_id"
+  end
+
+  create_table "origins", force: :cascade do |t|
+    t.bigint "ltn_id", null: false
+    t.float "lat", null: false
+    t.float "lng", null: false
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ltn_id"], name: "index_origins_on_ltn_id"
+  end
+
+  create_table "point_of_interests", force: :cascade do |t|
+    t.bigint "ltn_id", null: false
+    t.float "lat", null: false
+    t.float "lng", null: false
+    t.string "name", null: false
+    t.string "category"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ltn_id"], name: "index_point_of_interests_on_ltn_id"
   end
 
   create_table "runs", force: :cascade do |t|
@@ -99,6 +124,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_01_201727) do
   add_foreign_key "journey_runs", "journeys", name: "journey_runs_journey_id"
   add_foreign_key "journey_runs", "runs", name: "journey_runs_run_id"
   add_foreign_key "journeys", "ltns", name: "journeys_ltn_id"
+  add_foreign_key "journeys", "origins", on_delete: :nullify
+  add_foreign_key "journeys", "point_of_interests", on_delete: :nullify
   add_foreign_key "ltns", "users"
+  add_foreign_key "origins", "ltns"
+  add_foreign_key "point_of_interests", "ltns"
   add_foreign_key "runs", "ltns", name: "runs_ltn_id"
 end

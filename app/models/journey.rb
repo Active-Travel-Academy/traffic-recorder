@@ -4,12 +4,16 @@ class Journey < ApplicationRecord
        { frequently_routed: 'frequently_routed', infrequently_routed: 'infrequently_routed',
          test_routing: 'test_routing' }
   belongs_to :ltn
+  belongs_to :point_of_interest, optional: true
+  belongs_to :origin, optional: true
 
   has_many :journey_runs
 
   before_save :trim_name
 
   validates :type, :origin_lat, :origin_lng, :dest_lat, :dest_lng, presence: true
+  validates :point_of_interest_id, uniqueness: { scope: :origin_id }, allow_nil: true
+  validates :name, length: { maximum: 250 }, allow_blank: true
 
   attr_accessor :route_straight_away
 
@@ -44,9 +48,14 @@ class Journey < ApplicationRecord
 
   def map_data
     {
-      origin_lat:, origin_lng:,
-      dest_lat:, dest_lng:,
-      waypoint_lat:, waypoint_lng:
+      controller: 'location',
+      location_lat_value: origin_lat,
+      location_lng_value: origin_lng,
+      location_name_value: origin&.name || 'Origin',
+      location_dest_lat_value: dest_lat,
+      location_dest_lng_value: dest_lng,
+      location_dest_name_value: point_of_interest&.name || 'Destination',
+      location_persisted_value: true,
     }
   end
 
@@ -74,7 +83,7 @@ class Journey < ApplicationRecord
   def mapbox_directions
     Mapbox::Directions.directions(
       mapbox_coordinates, 'driving-traffic', geometries: 'geojson',
-      annotations: 'congestion_numeric', waypoints_per_route: true, overview: 'full'
+                                             annotations: 'congestion_numeric', waypoints_per_route: true, overview: 'full'
     )
   end
 

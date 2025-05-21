@@ -1,0 +1,40 @@
+.card.my-4
+  .card-header.bg-light
+    %h5.mb-0= Journey.model_name.human(count: 2)
+  .card-body
+    %p.text-muted.mb-4= t "journey_run_info"
+    .d-flex.justify-content-center.mb-3
+      != pagy_bootstrap_nav(pagy)
+    .row.gx-0.border-bottom.pb-2.mb-2
+      .col-md-1.text-center.fw-bold Enabled
+      .col-md-7.fw-bold Journey Name
+      .col-md-2.fw-bold Journey ID
+      - if @show_journey_type
+        .col-md-2.fw-bold Journey Type
+    #journeys
+      = render journeys
+
+    %hr
+    .d-flex.justify-content-center.mb-3
+      != pagy_bootstrap_nav(pagy)
+    .my-2.row
+      .col-4
+        = simple_form_for :all_journeys, url: [:disable_all_journeys, resource_link].flatten do |f|
+          = f.input :page, input_html: { value: pagy.page }, as: :hidden, wrapper: false
+          = f.button :submit, "Disable ALL #{resource_name} journeys", data: { confirm: "This will disable all #{resource.journeys.count} journeys for #{resource_name}. Are you sure?" }, class: "btn-warning"
+      .col-4
+        = simple_form_for :all_journeys, url: [:enable_all_journeys, resource_link].flatten do |f|
+          = f.input :page, input_html: { value: pagy.page }, as: :hidden, wrapper: false
+          = f.button :submit, "Enable ALL #{resource_name} journeys", data: { confirm: "This will disable all #{resource.journeys.count} journeys for #{resource_name}. Are you sure?" }, class: "btn-warning"
+      .col-4
+        - if journeys.any?(&:disabled)
+          = simple_form_for :all_journeys, url: [:enable_page_journeys, resource_link].flatten do |f|
+            = f.button :submit, "Enable journeys on page", data: { confirm: "This will enable all journeys visible on this page. Are you sure?" }
+            = f.input :journey_ids, input_html: { value: journeys.map(&:id).to_json }, as: :hidden, wrapper: false
+            = f.input :page, input_html: { value: pagy.page }, as: :hidden, wapper: false
+        - else
+          = simple_form_for :all_journeys, url: [:disable_page_journeys, resource_link].flatten do |f|
+            = f.button :submit, "Disable journeys on page", data: { confirm: "This will disable all journeys visible on this page. Are you sure?" }
+            = f.input :journey_ids, input_html: { value: journeys.map(&:id).to_json }, as: :hidden, wrapper: false
+            = f.input :page, input_html: { value: pagy.page }, as: :hidden, wrapper: false
+
