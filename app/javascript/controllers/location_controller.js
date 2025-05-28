@@ -50,10 +50,14 @@ export default class extends Controller {
   }
 
   async loadCategory() {
+    const cat = this.category
+
+    if (cat == null || typeof cat === "string" && cat.trim().length === 0) return
+
     const center = this.map.getCenter()
     const url = new URL("/ltns/3/point_of_interests/search", window.location.origin)
 
-    url.searchParams.append("cat", this.category)
+    url.searchParams.append("cat", cat)
     url.searchParams.append("lat", center.lat)
     url.searchParams.append("lng", center.lng)
 

@@ -7,6 +7,8 @@ class PointOfInterest < ApplicationRecord
   validates :name, presence: true
 
   def self.locate(poi:, lat:, lng:, limit: 25)
+    return [] if poi.blank? || lat.blank? || lng.blank?
+
     Mapbox.request(
       :get, "/search/searchbox/v1/category/#{poi}?language=en&limit=#{limit}&proximity=#{lng}%2C#{lat}", nil
     )[0]
