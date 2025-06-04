@@ -16,7 +16,7 @@
         .col-md-4
           = link_to "Add Point of Interest", new_ltn_point_of_interest_path(@ltn), class: "btn btn-secondary w-100"
         .col-md-4
-          = button_to "Create Journeys", ltn_points_of_interest_and_origins_path(@ltn), method: :post, class: "btn btn-primary w-100"
+          = button_to "Generate Journeys", ltn_points_of_interest_and_origins_path(@ltn), method: :post, class: "btn btn-primary w-100", title: "Generate journeys between all origins and points of interest"
 
   / Origins Section
   .card.mb-4
