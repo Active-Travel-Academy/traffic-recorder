@@ -29,6 +29,11 @@
 
 en:
   hello: "Hello world"
+  helpers:
+    submit:
+      ltn:
+        create: Continue
+      update: Save changes
   activerecord:
     models:
       ltn: Scheme
