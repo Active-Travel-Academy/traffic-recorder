@@ -19,8 +19,14 @@
   = render "shared/journeys_card", journeys: @journeys, resource: @point_of_interest, resource_name: @point_of_interest.name, pagy: @pagy, show_journey_type: false, resource_link: [@ltn, @point_of_interest]
 
   .row
-    .col-md-5
+    .col-md-4
+      = link_to "Delete", [@ltn, @point_of_interest],
+        title: "The journeys will all remain, but this point of interest will be deleted.",
+          class: "btn btn-danger",
+        method: :delete,
+          data: { confirm: "Are you sure you want to delete #{@point_of_interest.name}? This will NOT effect the #{@journeys.count} journeys." }
+    .col-md-4
       = link_to "Back to Origins and Points of Interest", ltn_points_of_interest_and_origins_path(@ltn), class: "btn btn-outline-secondary"
-    .col-md-5
+    .col-md-4
       = link_to "Back to #{@ltn.scheme_name}", ltn_path(@ltn), class: "btn btn-outline-secondary"
 

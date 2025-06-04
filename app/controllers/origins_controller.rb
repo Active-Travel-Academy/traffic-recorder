@@ -20,6 +20,14 @@ class OriginsController < ApplicationController
     end
   end
 
+  def destroy
+    if origin.destroy
+      redirect_to ltn_points_of_interest_and_origins_path(@ltn), notice: "Point of Interest #{origin.name} was successfully destroyed."
+    else
+      redirect_to origin, notice: 'origin could not be destroyed', status: :see_other
+    end
+  end
+
   private
 
   def toggleable_resource

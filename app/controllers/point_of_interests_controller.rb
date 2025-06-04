@@ -30,10 +30,9 @@ class PointOfInterestsController < ApplicationController
 
   def destroy
     if point_of_interest.destroy
-      redirect_to ltn_path(@ltn), notice: 'point_of_interest was successfully destroyed.', status: :see_other
+      redirect_to ltn_points_of_interest_and_origins_path(@ltn), notice: "Point of Interest #{point_of_interest.name} was successfully destroyed."
     else
-      redirect_to point_of_interest, notice: 'point_of_interest could not be destroyed, it might have been run',
-                                     status: :see_other
+      redirect_to point_of_interest, notice: 'point_of_interest could not be destroyed', status: :see_other
     end
   end
 
