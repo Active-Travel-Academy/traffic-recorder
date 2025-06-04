@@ -8,7 +8,7 @@
     %p.text-muted
       Selecting a category will populate Points of Intrest on the map.
     .mb-3
-    = f.input :category, collection: PointOfInterest::CATEGORIES.map { |c| [c.titleize, c] },
+    = f.input :category, collection: PointOfInterest::CATEGORIES.map { |k, v| [v, k] },
       include_blank: "Select a category",
       input_html: { data: { choices_target: "select" } },
       wrapper_html: { data: { controller: "choices" } }
