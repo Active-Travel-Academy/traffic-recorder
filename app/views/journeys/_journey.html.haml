@@ -2,7 +2,7 @@
   .col-md-1.d-flex.justify-content-center
     = simple_form_for [@ltn, journey], data: { turbo: true }, html: { class: "mb-0" } do |f|
       = f.input :enabled,
-                input_html: { onchange: "this.form.requestSubmit()" },
+                input_html: { onchange: "this.form.requestSubmit()", data: { journeys_target: "checkbox" } },
                 wrapper: false,
                 label: false,
                 hint: false,
