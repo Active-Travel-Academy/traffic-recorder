@@ -52,7 +52,7 @@ export default class extends Controller {
   async loadCategory() {
     const cat = this.category
 
-    if (cat == null || typeof cat === "string" && cat.trim().length === 0) return
+    if (cat == null || typeof cat === "string" && cat.trim().length === 0 || !this.map._loaded) return
 
     const center = this.map.getCenter()
     const url = new URL("/ltns/3/point_of_interests/search", window.location.origin)
