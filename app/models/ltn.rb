@@ -22,7 +22,7 @@ class Ltn < ApplicationRecord
             point_of_interest: poi,
             origin:
           ) do |journey|
-            journey.type = :frequently_routed
+            journey.type = :infrequently_routed
             journey.origin_lat = origin.lat
             journey.origin_lng = origin.lng
             journey.dest_lat = poi.lat
