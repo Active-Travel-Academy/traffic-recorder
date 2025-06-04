@@ -7,15 +7,15 @@
     .container
       .row
         .col-sm-2.d-flex.align-items-end
-          = link_to "Manually add journey", new_ltn_journey_path(@ltn), class: "btn btn-primary"
+          = link_to "Manually add journey", new_ltn_journey_path(@ltn), class: "btn btn-primary", title: "Manually add a single journey by selecting an origin and destination."
         .col-sm-2.d-flex.align-items-end
-          = link_to "View Origins and Points of Interest", ltn_points_of_interest_and_origins_path(@ltn), class: "btn btn-outline-primary"
+          = link_to "Build journeys from locations", ltn_points_of_interest_and_origins_path(@ltn), class: "btn btn-primary", title: "Add Origins and Points of Intrest, then generate journeys between them."
         .col-sm-8
           Upload a CSV file with your journeys.  It must be in this format:
           %a{href: "/journeys_upload.csv"} journeys_upload.csv
           = simple_form_for :journeys_upload, url: ltn_journeys_uploads_path(@ltn) do |f|
             = f.input :file, as: :file, input_html: { accept: "text/csv" }, label: false
-            = f.button :submit, "Upload new journeys"
+            = f.button :submit, "Import multiple journeys", title: "Upload a CSV file to quickly add multiple journeys at once."
 
 = render "shared/journeys_card", journeys: @journeys, resource: @ltn, resource_name: @ltn.scheme_name, pagy: @pagy, show_journey_type: @show_journey_type, resource_link: [@ltn]
 
