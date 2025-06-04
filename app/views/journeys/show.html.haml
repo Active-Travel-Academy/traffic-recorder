@@ -60,9 +60,11 @@
           - else
             .alert.alert-info
               No runs recorded yet.
-            = link_to "Delete this Journey", [@ltn, @journey],
-              method: :delete,
-                data: { confirm: "Are you sure you want to delete this journey?" }
+          = link_to "Delete this Journey", [@ltn, @journey],
+            class: "btn btn-danger",
+            title: "This will delete #{@journey.display_name} journey and ALL of its runs",
+            method: :delete,
+            data: { confirm: "Are you sure you want to delete this journey? It will perminantly delete all the #{@journey.journey_runs.count} runs." }
   .my-4.row
     .col-md-2
       = link_to "Back to #{@ltn.scheme_name}", ltn_path(@ltn), class: "btn btn-outline-secondary"

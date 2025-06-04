@@ -7,7 +7,7 @@ class Journey < ApplicationRecord
   belongs_to :point_of_interest, optional: true
   belongs_to :origin, optional: true
 
-  has_many :journey_runs
+  has_many :journey_runs, dependent: :destroy
 
   before_save :trim_name
 
