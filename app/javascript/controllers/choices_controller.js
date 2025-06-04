@@ -11,6 +11,7 @@ export default class extends Controller {
         removeItemButton: true,
         searchEnabled: true,
         shouldSort: false,
+        position: 'top',
       })
       this.selectTarget.addEventListener("change", (event) => {
         const category = event.target.value
