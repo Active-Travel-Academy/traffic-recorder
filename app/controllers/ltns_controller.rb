@@ -49,7 +49,6 @@ class LtnsController < ApplicationController
     redirect_to ltns_path, notice: "Scheme was successfully destroyed.", status: :see_other
   end
 
-
   private
 
   def toggleable_resource

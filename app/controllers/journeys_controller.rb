@@ -40,13 +40,18 @@ class JourneysController < ApplicationController
     end
   end
 
-
   def destroy
     if journey.destroy
       redirect_to ltn_path(@ltn), notice: "Journey was successfully destroyed.", status: :see_other
     else
       redirect_to journey, notice: "Journey could not be destroyed, it might have been run", status: :see_other
     end
+  end
+
+  def test_all
+    journeys = @ltn.journeys.where(disabled: false, type: :infrequently_routed)
+    journeys.update_all(type: :test_routing, updated_at: Time.current)
+    redirect_to ltn_path(@ltn), notice: 'All journeys tested'
   end
 
   private

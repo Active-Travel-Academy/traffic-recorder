@@ -8,7 +8,11 @@ Rails.application.routes.draw do
     end
     resources :journey_run_downloads
     resources :journeys_uploads, only: :create
-    resources :journeys
+    resources :journeys do
+      collection do
+        post :test_all
+      end
+    end
     resources :origins, :point_of_interests, except: :index do
       collection do
         get :search
