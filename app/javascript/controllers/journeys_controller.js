@@ -26,13 +26,17 @@ export default class extends Controller {
     const checked = this.checkboxTargets.filter(cb => cb.checked).length
 
     if (checked === 0) {
-      this.toggleAllTarget.indeterminate = false
-      this.toggleAllTarget.checked = false
+      this.toggleAllTargets.forEach(el => {
+        el.indeterminate = false
+        el.checked = false
+      })
     } else if (checked === total) {
-      this.toggleAllTarget.indeterminate = false
-      this.toggleAllTarget.checked = true
+      this.toggleAllTargets.forEach(el => {
+        el.indeterminate = false
+        el.checked = true
+     })
     } else {
-      this.toggleAllTarget.indeterminate = true
+      this.toggleAllTargets.forEach(el =>  { el.indeterminate = true })
     }
   }
 
