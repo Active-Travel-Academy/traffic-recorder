@@ -9,6 +9,8 @@ class Journey < ApplicationRecord
 
   has_many :journey_runs, dependent: :destroy
 
+  scope :ordered, -> { order(:disabled, :id) }
+
   before_save :trim_name
 
   validates :type, :origin_lat, :origin_lng, :dest_lat, :dest_lng, presence: true

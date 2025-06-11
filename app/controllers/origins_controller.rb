@@ -8,7 +8,7 @@ class OriginsController < ApplicationController
 
   def show
     origin
-    @pagy, @journeys = pagy(origin.journeys.order(:id), limit: 50)
+    @pagy, @journeys = pagy(origin.journeys.ordered, limit: 50)
   end
 
   def create

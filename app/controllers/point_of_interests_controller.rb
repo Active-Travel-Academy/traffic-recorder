@@ -8,7 +8,7 @@ class PointOfInterestsController < ApplicationController
 
   def show
     point_of_interest
-    @pagy, @journeys = pagy(point_of_interest.journeys.order(:id), limit: 50)
+    @pagy, @journeys = pagy(point_of_interest.journeys.ordered, limit: 50)
   end
 
   def create

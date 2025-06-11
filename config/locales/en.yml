@@ -41,5 +41,5 @@ en:
       ltn:
         default_lat: "Centre of scheme"
         default_lng: "Centre of scheme"
-  journey_run_info: "All enabled journeys run at 08:30, 13:00 and 17:30 Tue and 13:00 Sat."
+  journey_run_info: "All enabled journeys run at 08:30, 13:00 and 17:30 Tue and 13:00 Sat. Disabled journeys are at the end of the list."
 
