@@ -1,33 +1,32 @@
 module JourneyToggleable
   extend ActiveSupport::Concern
 
-  def enable_all_journeys
-    toggleable_resource.journeys.enable_all!
-    redirect_to polymorphic_path(toggleable_resource_link, page: params[:all_journeys][:page])
+  def enable_journeys
+    toggleable_journeys.enable_all!
+    redirect_to polymorphic_path(toggleable_resource_link, page: params[:manage_journeys][:page])
   end
 
-  def disable_all_journeys
-    toggleable_resource.journeys.disable_all!
-    redirect_to polymorphic_path(toggleable_resource_link, page: params[:all_journeys][:page])
+  def disable_journeys
+    toggleable_journeys.disable_all!
+    redirect_to polymorphic_path(toggleable_resource_link, page: params[:manage_journeys][:page])
   end
 
-  def enable_page_journeys
-    page_journeys.enable_all!
-    redirect_to polymorphic_path(toggleable_resource_link, page: params[:all_journeys][:page])
-  end
-
-  def disable_page_journeys
-    page_journeys.disable_all!
-    redirect_to polymorphic_path(toggleable_resource_link, page: params[:all_journeys][:page])
+  def test_journeys
+    toggleable_journeys.update_all(type: :test_routing, updated_at: Time.current)
+    redirect_to polymorphic_path(toggleable_resource_link, page: params[:manage_journeys][:page])
   end
 
   private
 
-  def toggleable_journey_ids
-    JSON.parse(params[:all_journeys][:journey_ids])
+  def toggleable_journeys
+    if ActiveRecord::Type::Boolean.new.cast(params[:manage_journeys][:all_journeys])
+      toggleable_resource.journeys
+    else
+      toggleable_resource.journeys.where(id: toggleable_journey_ids)
+    end
   end
 
-  def page_journeys
-    toggleable_resource.journeys.where(id: toggleable_journey_ids)
+  def toggleable_journey_ids
+    params[:manage_journeys][:journey_ids]&.split(',') || []
   end
 end

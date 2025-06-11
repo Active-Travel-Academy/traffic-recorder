@@ -34,10 +34,7 @@ class JourneysController < ApplicationController
       flash.now[:alert] = "Something went wrong"
     end
 
-    respond_to do |format|
-      format.html { render :show }
-      format.turbo_stream # Renders update.turbo_stream.erb
-    end
+    render :show
   end
 
   def destroy
@@ -46,12 +43,6 @@ class JourneysController < ApplicationController
     else
       redirect_to journey, notice: "Journey could not be destroyed, it might have been run", status: :see_other
     end
-  end
-
-  def test_all
-    journeys = @ltn.journeys.where(disabled: false, type: :infrequently_routed)
-    journeys.update_all(type: :test_routing, updated_at: Time.current)
-    redirect_to ltn_path(@ltn), notice: 'All journeys tested'
   end
 
   private

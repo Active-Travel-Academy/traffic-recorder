@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["checkbox", "toggleAll", "enableForm", "disableForm"]
+  static targets = ["checkbox", "toggleAll", "journeyIds", "allJourneys", "selectedCount"]
 
   connect() {
     this.updateToggleAllState()
@@ -9,39 +9,39 @@ export default class extends Controller {
 
   toggleAll(event) {
     const checked = event.target.checked
-    this.checkboxTargets.forEach(cb => {
-      if (cb.checked === checked) return
-      cb.checked = checked
+    this.checkboxTargets.forEach(el => {
+      if (el.checked === checked) return
+      el.checked = checked
     })
-
-    if (checked) {
-      this.enableFormTarget.requestSubmit()
-    } else {
-      this.disableFormTarget.requestSubmit()
-    }
+    this.allJourneysTargets.forEach(el => el.value = this.toggleAllTarget.checked)
+    this.updateSelectedCount()
   }
 
   updateToggleAllState() {
-    const total = this.checkboxTargets.length
-    const checked = this.checkboxTargets.filter(cb => cb.checked).length
+    const checked = this.checkedCheckboxes()
 
-    if (checked === 0) {
-      this.toggleAllTargets.forEach(el => {
-        el.indeterminate = false
-        el.checked = false
-      })
-    } else if (checked === total) {
-      this.toggleAllTargets.forEach(el => {
-        el.indeterminate = false
-        el.checked = true
-     })
+    if (checked.length === 0) {
+      this.toggleAllTarget.indeterminate = false
+      this.toggleAllTarget.checked = false
     } else {
-      this.toggleAllTargets.forEach(el =>  { el.indeterminate = true })
+      this.toggleAllTarget.indeterminate = true
+      this.toggleAllTarget.checked = false
     }
+
+    const checkedIds = checked.map(checkbox => checkbox.dataset.journeyId)
+
+    this.journeyIdsTargets.forEach(el => {
+      el.value = checkedIds
+    })
+    this.updateSelectedCount()
   }
 
-  checkboxTargetConnected(element) {
-    element.addEventListener("change", () => this.updateToggleAllState())
-  }
+  checkedCheckboxes() {
+    return this.checkboxTargets.filter(cb => cb.checked)
+  }
+
+  updateSelectedCount() {
+    this.selectedCountTarget.innerHTML = this.toggleAllTarget.checked ? this.toggleAllTarget.dataset.count : this.checkedCheckboxes().length.toString()
+  }
 }
 

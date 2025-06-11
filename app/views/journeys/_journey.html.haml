@@ -1,14 +1,18 @@
-.row.gx-0.mb-3.align-items-center.border-bottom.pb-2{class: ("table-row" unless journey == @journeys.last)}
+.row.mb-3.align-items-center.border-bottom.pb-2{class: ("table-row" unless journey == @journeys.last)}
   .col-md-1.d-flex.justify-content-center
-    = simple_form_for [@ltn, journey], data: { turbo: true }, html: { class: "mb-0" } do |f|
-      = f.input :enabled,
-                input_html: { onchange: "this.form.requestSubmit()", data: { journeys_target: "checkbox" } },
-                wrapper: false,
-                label: false,
-                hint: false,
-                as: :boolean
-
-  .col-md-7.ps-2
+    .form-check
+      %input.form-check-input.is-valid.boolean.optional{
+        type: "checkbox",
+        "data-action" => "change->journeys#updateToggleAllState",
+        "data-journeys-target" => "checkbox",
+        "data-journey-id" => journey.id,
+      }
+  .col-md-1.d-flex.justify-content-center
+    - if journey.enabled
+      %i.bi.bi-check-circle-fill.text-success{ title: "Enabled" }
+    - else
+      %i.bi.bi-x-circle-fill.text-secondary{ title: "Disabled" }
+  .col-md-6
     = link_to journey.display_name.truncate(75), [@ltn, journey], class: "text-decoration-none"
 
   .col-md-2

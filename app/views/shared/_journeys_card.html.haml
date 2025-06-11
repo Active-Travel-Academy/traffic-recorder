@@ -1,64 +1,68 @@
-.card.my-4
-  .card-header.bg-light
-    %h5.mb-0 List of Journeys
-  .card-body{ data: { controller: "journeys" } }
-    %p.text-muted.mb-4= t "journey_run_info"
-    .d-flex.justify-content-center.mb-3
-      != pagy_bootstrap_nav(pagy)
-    .row.gx-0.border-bottom.pb-2.mb-2
-      .hidden
-        = form_for :all_journeys, url: [:enable_page_journeys, resource_link].flatten, data: { "journeys-target" => "enableForm" } do |f|
-          = f.hidden_field :journey_ids, value: journeys.map(&:id).to_json
-          = f.hidden_field :page, value: pagy.page
-        = form_for :all_journeys, url: [:disable_page_journeys, resource_link].flatten, data: { "journeys-target" => "disableForm" } do |f|
-          = f.hidden_field :journey_ids, value: journeys.map(&:id).to_json
-          = f.hidden_field :page, value: pagy.page
-      .row.gx-0.mb-3.align-items-center.border-bottom.pb-2.table-row
-        .col-md-1.d-flex.justify-content-center
+.div{ data: { controller: "journeys" } }
+  .card.my-4
+    .card-header.bg-light
+      %h5.mb-0 Manage journeys
+    .card-body
+      .container
+        .row.justify-content-center.mb-3
+          .col-auto
+            .d-flex.flex-column.align-items-center
+              %span
+                %span.fw-bold.fs-5 Selected Journeys:
+                %span.badge.bg-primary.rounded-pill{data: { journeys_target: "selectedCount" }}
+        .row.justify-content-center.my-2
+          .col-4
+            .d-flex.flex-column.align-items-center
+              = form_with url: [:disable_journeys, resource_link].flatten, scope: :manage_journeys do |f|
+                = f.hidden_field :page, value: pagy.page
+                = f.hidden_field :journey_ids, value: nil, data: { journeys_target: "journeyIds" }
+                = f.hidden_field :all_journeys, value: nil, data: { journeys_target: "allJourneys" }
+                = f.submit "Disable", class: "btn btn-warning", title: "Disable selected journeys, so they will not be routed in the future."
+          .col-4
+            .d-flex.flex-column.align-items-center
+              = form_with url: [:enable_journeys, resource_link].flatten, scope: :manage_journeys do |f|
+                = f.hidden_field :page, value: pagy.page
+                = f.hidden_field :journey_ids, value: nil, data: { journeys_target: "journeyIds" }
+                = f.hidden_field :all_journeys, value: nil, data: { journeys_target: "allJourneys" }
+                = f.submit "Enable", class: "btn btn-warning", title: "Enable selected journeys, so they will be routed in the future."
+          .col-4
+            .d-flex.flex-column.align-items-center
+              = form_with url: [:test_journeys, resource_link].flatten, scope: :manage_journeys do |f|
+                = f.hidden_field :page, value: pagy.page
+                = f.hidden_field :journey_ids, value: nil, data: { journeys_target: "journeyIds" }
+                = f.hidden_field :all_journeys, value: nil, data: { journeys_target: "allJourneys" }
+                = f.submit "Run now", class: "btn btn-warning", title: "This will route selected journeys now once so you can test that everything is working."
+
+  .card.my-1
+    .card-header.bg-light
+      %h5.mb-0 List of Journeys
+    .card-body
+      %p.text-muted.mb-4= t "journey_run_info"
+      .d-flex.justify-content-center.mb-3
+        != pagy_bootstrap_nav(pagy)
+      .row.mb-3.align-items-center.border-bottom.pb-2.table-row
+        .col-1.d-flex.justify-content-center
           .form-check
             %input.form-check-input.is-valid.boolean.optional{
               type: "checkbox",
-              "data-action" => "change->journeys#toggleAll",
-              "data-journeys-target" => "toggleAll"
+              data: {
+                "journeys-target" => "toggleAll",
+                "action" => "change->journeys#toggleAll",
+                "count" => journeys.count,
+              },
             }
-        .col-4.ps-2
-          %label Enable/Disable all on page
-        .col-3
-          = simple_form_for :all_journeys, url: [:disable_all_journeys, resource_link].flatten do |f|
-            = f.input :page, input_html: { value: pagy.page }, as: :hidden, wrapper: false
-            = f.button :submit, "Disable all journeys", data: { confirm: "This will disable all #{resource.journeys.count} journeys for #{resource_name}. Are you sure?" }, class: "btn-warning"
-        .col-3
-          = simple_form_for :all_journeys, url: [:enable_all_journeys, resource_link].flatten do |f|
-            = f.input :page, input_html: { value: pagy.page }, as: :hidden, wrapper: false
-            = f.button :submit, "Enable all journeys", data: { confirm: "This will disable all #{resource.journeys.count} journeys for #{resource_name}. Are you sure?" }, class: "btn-warning"
+        .col-7
+          %label.text-secondary.fs-5 Select all (including on other pages)
+      .row.mb-3.align-items-center.border-bottom.pb-3
+        .col-md-1.text-center.fw-bold Selected
+        .col-md-1.text-center.fw-bold Enabled
+        .col-md-6.fw-bold Journey Name
+        .col-md-2.fw-bold Journey ID
+        - if @show_journey_type
+          .col-md-2.fw-bold Journey Type
+      #journeys
+        = render journeys
+      %hr
+      .d-flex.justify-content-center.mb-3
 
-      .col-md-1.text-center.fw-bold Enabled
-      .col-md-7.fw-bold Journey Name
-      .col-md-2.fw-bold Journey ID
-      - if @show_journey_type
-        .col-md-2.fw-bold Journey Type
-    #journeys
-      = render journeys
-    %hr
-    .d-flex.justify-content-center.mb-3
-
-      != pagy_bootstrap_nav(pagy)
-    - if journeys.size > 10
-      .row.gx-0.mb-3.align-items-center.border-bottom.pb-2.table-row
-        .col-md-1.d-flex.justify-content-center
-          .form-check
-            %input.form-check-input.is-valid.boolean.optional{
-              type: "checkbox",
-              "data-action" => "change->journeys#toggleAll",
-              "data-journeys-target" => "toggleAll"
-            }
-        .col-4.ps-2
-          %label Enable/Disable all on page
-        .col-3
-          = simple_form_for :all_journeys, url: [:disable_all_journeys, resource_link].flatten do |f|
-            = f.input :page, input_html: { value: pagy.page }, as: :hidden, wrapper: false
-            = f.button :submit, "Disable all journeys", data: { confirm: "This will disable all #{resource.journeys.count} journeys for #{resource_name}. Are you sure?" }, class: "btn-warning"
-        .col-3
-          = simple_form_for :all_journeys, url: [:enable_all_journeys, resource_link].flatten do |f|
-            = f.input :page, input_html: { value: pagy.page }, as: :hidden, wrapper: false
-            = f.button :submit, "Enable all journeys", data: { confirm: "This will disable all #{resource.journeys.count} journeys for #{resource_name}. Are you sure?" }, class: "btn-warning"
+        != pagy_bootstrap_nav(pagy)
