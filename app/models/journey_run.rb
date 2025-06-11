@@ -1,4 +1,3 @@
-require 'csv'
 class JourneyRun < ApplicationRecord
   belongs_to :journey
   belongs_to :run

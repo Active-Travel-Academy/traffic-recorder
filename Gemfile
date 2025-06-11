@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby "~> 3.2.2"
+ruby "~> 3.4.4"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.0"
 
@@ -26,6 +26,7 @@ gem "turbo-rails"
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem "stimulus-rails"
 gem "pagy"
+gem "csv"
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
