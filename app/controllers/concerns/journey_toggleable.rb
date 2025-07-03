@@ -13,7 +13,7 @@ module JourneyToggleable
 
   def test_journeys
     toggleable_journeys.update_all(type: :test_routing, updated_at: Time.current)
-    redirect_to polymorphic_path(toggleable_resource_link, page: params[:manage_journeys][:page])
+    redirect_to polymorphic_path(toggleable_resource_link, page: params[:manage_journeys][:page]), notice: "Journeys will be run within the next two minutes"
   end
 
   private
