@@ -34,6 +34,18 @@ RSpec.describe JourneyRun, type: :model do
     end
 
     context "without overview_polyline" do
+      context "when runs happened on the to date" do
+        let(:from) { Date.new(2021, 3, 25) }
+        let(:to) { from }
+
+        it "gets the runs" do
+          csv = described_class.to_csv(from:, to:, ltn:)
+          parsed = CSV.parse(csv, headers: true)
+          first = parsed.first
+          expect(Date.parse(first["Created At"])).to eq(from)
+        end
+      end
+
       it do
         csv = described_class.to_csv(from: Date.new(2021, 3, 24), to: Date.new(2021, 3, 26), ltn:)
         parsed = CSV.parse(csv, headers: true)

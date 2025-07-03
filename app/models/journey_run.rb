@@ -19,7 +19,7 @@ class JourneyRun < ApplicationRecord
   def self.to_csv(from:, to:, ltn:, overview_polyline: false)
     throw(:invalid_input, "To: '#{to}' is not a date") unless to.is_a?(Date)
     throw(:invalid_input, "From: '#{from}' is not a date") unless from.is_a?(Date)
-    throw(:invalid_input, "From: '#{from}' must be before To: '#{to}'") unless from < to
+    throw(:invalid_input, "From: '#{from}' must be before To: '#{to}'") unless from <= to
 
     journey_attrs = [
       CsvOption.new(:id, "Journey ID"),
@@ -38,7 +38,9 @@ class JourneyRun < ApplicationRecord
       CsvOption.new(:created_at),
     ]
 
-    runs = all.joins(:journey, :run).includes(:journey, :run).where(journeys: {ltn: ltn}, runs: {created_at: [from..to]}).order(:run_id)
+    runs = all.joins(:journey, :run).includes(:journey, :run).where(
+      journeys: {ltn: ltn}, runs: {created_at: [from.beginning_of_day..to.end_of_day]}
+    )
 
     throw(:invalid_input, "Can only ask for #{MAX_RUNS_COUNT} journey runs at a time.  The between '#{from}' and '#{to}' there are #{runs.count} journey runs.") if runs.count > MAX_RUNS_COUNT
 
