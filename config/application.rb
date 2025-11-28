@@ -29,6 +29,7 @@ module AtaWeb
     config.autoload_lib(ignore: %w(assets tasks))
     config.autoload_paths += ["lib/components"]
     config.eager_load_paths += ["lib/components"]
+    config.action_mailer.delivery_method = :mailjet_api
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
