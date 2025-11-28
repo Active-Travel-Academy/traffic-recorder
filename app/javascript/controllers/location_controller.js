@@ -55,7 +55,7 @@ export default class extends Controller {
     if (cat == null || typeof cat === "string" && cat.trim().length === 0 || !this.map._loaded) return
 
     const center = this.map.getCenter()
-    const url = new URL("/ltns/3/point_of_interests/search", window.location.origin)
+    const url = new URL("/point_of_interests/search", window.location.origin)
 
     url.searchParams.append("cat", cat)
     url.searchParams.append("lat", center.lat)

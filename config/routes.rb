@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  resources :point_of_interests, only: [] do
+    collection do
+      get :search
+    end
+  end
   resources :ltns do
     member do
       post :enable_journeys
@@ -9,9 +14,6 @@ Rails.application.routes.draw do
     resources :journeys_uploads, only: :create
     resources :journeys
     resources :origins, :point_of_interests, except: :index do
-      collection do
-        get :search
-      end
       member do
         post :enable_journeys
         post :disable_journeys

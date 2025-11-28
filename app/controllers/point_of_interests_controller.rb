@@ -1,5 +1,5 @@
 class PointOfInterestsController < ApplicationController
-  before_action :set_ltn
+  before_action :set_ltn, except: [:search]
   include JourneyToggleable
 
   def new
